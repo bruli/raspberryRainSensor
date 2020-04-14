@@ -28,10 +28,10 @@ func NewServer(conf *Config) *Server {
 
 func (s *Server) Run()  {
 	srv := &http.Server{
-		Handler: newRouter().build(),
-		Addr: s.conf.serverAddr,
+		Handler:      newRouter().build(),
+		Addr:         s.conf.serverAddr,
 		WriteTimeout: 15 *time.Second,
-		ReadTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 
 	}
 	go func() {
