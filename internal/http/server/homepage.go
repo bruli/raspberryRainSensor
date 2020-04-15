@@ -1,14 +1,28 @@
 package server
 
-import "net/http"
+import (
+	"net/http"
 
-type homepage struct {
+	jsoniter "github.com/json-iterator/go"
+)
+
+type homepageResponseBody struct {
+	Status string `json:"status"`
 }
 
-func (h homepage) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	writeJsonResponse(writer, http.StatusOK, nil)
+func newHomepageResponseBody() *homepageResponseBody {
+	return &homepageResponseBody{Status: "OK"}
 }
 
-func newHomepage() *homepage {
-	return &homepage{}
+type homepageHandler struct {
+	body *homepageResponseBody
+}
+
+func (h *homepageHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	b, _ := jsoniter.Marshal(h.body)
+	writeJsonResponse(writer, http.StatusOK, b)
+}
+
+func newHomepage() *homepageHandler {
+	return &homepageHandler{body: newHomepageResponseBody()}
 }
