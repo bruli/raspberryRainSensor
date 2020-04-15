@@ -74,3 +74,45 @@ func TestRainHandler(t *testing.T) {
 		})
 	}
 }
+
+func TestRainValueHandler(t *testing.T) {
+	errorResponse := errorResponse{Error: "Error reading rain sensor."}
+	errorMsg, _ := jsoniter.Marshal(&errorResponse)
+	response := rainValueResponseBody{Value: 200}
+	responseBody, _ := jsoniter.Marshal(&response)
+
+	tests := map[string]struct {
+		body         io.Reader
+		httpCodeResp int
+		readerError  error
+		readerValue  uint16
+	}{
+		"it should return internal server error when reader returns error": {body: bytes.NewBuffer(errorMsg), httpCodeResp: http.StatusInternalServerError, readerError: errors.New("error"), readerValue: 0},
+		"it should return Ok": {body: bytes.NewBuffer(responseBody), httpCodeResp: http.StatusOK, readerValue: 200},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			reader := rain.HumidityReaderMock{}
+			logger := log.LoggerMock{}
+			rout := newRouter()
+			rout.rainValue = newRainValueHandler(&reader, &logger)
+			server := rout.build()
+
+			request, err := http.NewRequest(http.MethodGet, "/rain/value", tt.body)
+			assert.NoError(t, err)
+
+			writer := httptest.NewRecorder()
+
+			logger.FatalfFunc = func(format string, v ...interface{}) {
+			}
+			reader.ReadFunc = func() (uint16, error) {
+				return tt.readerValue, tt.readerError
+			}
+
+			server.ServeHTTP(writer, request)
+			assert.Equal(t, tt.httpCodeResp, writer.Code)
+			assert.Equal(t, tt.body, writer.Body)
+		})
+	}
+}

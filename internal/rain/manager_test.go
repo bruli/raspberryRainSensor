@@ -32,10 +32,35 @@ func TestManager_IsRaining(t *testing.T) {
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 				assert.Equal(t, tt.logMsg, fmt.Sprintf(format, v...))
 			}
-			manager := rain.NewManager(&read, &logger)
+			manager := rain.NewRainManager(&read, &logger)
 			result, err := manager.IsRaining()
 			assert.Equal(t, tt.result, result)
 			assert.Equal(t, tt.err, err)
+		})
+	}
+}
+
+func TestRainManager_RainValue(t *testing.T) {
+	tests := map[string]struct {
+		result uint16
+		err    error
+	}{
+		"it should return error":  {result: 0, err: errors.New("error")},
+		"it should return values": {result: 500},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			read := rain.HumidityReaderMock{}
+			logger := log.LoggerMock{}
+			read.ReadFunc = func() (uint16, error) {
+				return tt.result, tt.err
+			}
+			logger.FatalfFunc = func(format string, v ...interface{}) {
+			}
+			manager := rain.NewRainManager(&read, &logger)
+			result, err := manager.RainValue()
+			assert.Equal(t, tt.err, err)
+			assert.Equal(t, tt.result, result)
 		})
 	}
 }

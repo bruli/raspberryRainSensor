@@ -13,13 +13,18 @@ import (
 type rainResponseBody struct {
 	IsRaining bool `json:"is_raining"`
 }
+
+func newRainResponseBody() *rainResponseBody {
+	return &rainResponseBody{}
+}
+
 type rainHandler struct {
-	manager *rain.Manager
+	manager *rain.RainManager
 	body    *rainResponseBody
 }
 
 func newRainHandler(reader rain.HumidityReader, logger log.Logger) *rainHandler {
-	return &rainHandler{manager: rain.NewManager(reader, logger), body: &rainResponseBody{}}
+	return &rainHandler{manager: rain.NewRainManager(reader, logger), body: newRainResponseBody()}
 }
 
 func (r *rainHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
