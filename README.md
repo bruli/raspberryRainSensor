@@ -6,5 +6,7 @@ Api rest to get if weather is raining.
 Use a microchip MCP3008-I/P to use analog pin from raspberry pi.
 
 ## Schema
-![Schema](./doc/rainSensor_bb.png)
+![Breadboard](./doc/rainSensor_bb.png)
+
+![Schematic](./doc/rainSensor_bb_schema.png)
 
