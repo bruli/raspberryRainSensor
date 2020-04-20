@@ -11,7 +11,8 @@ import (
 )
 
 type rainResponseBody struct {
-	IsRaining bool `json:"is_raining"`
+	IsRaining bool   `json:"is_raining"`
+	Value     uint16 `json:"value"`
 }
 
 func newRainResponseBody() *rainResponseBody {
@@ -28,12 +29,19 @@ func newRainHandler(reader rain.HumidityReader, logger log.Logger) *rainHandler 
 }
 
 func (r *rainHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	data, err := r.manager.IsRaining()
+	raining, err := r.manager.IsRaining()
 	if err != nil {
 		writeJsonErrorResponse(writer, http.StatusInternalServerError, "Error reading rain sensor.")
 		return
 	}
-	r.body.IsRaining = data
+	value, err := r.manager.RainValue()
+	if err != nil {
+		writeJsonErrorResponse(writer, http.StatusInternalServerError, "Error reading rain sensor.")
+		return
+	}
+
+	r.body.IsRaining = raining
+	r.body.Value = value
 	response, _ := jsoniter.Marshal(r.body)
 
 	writeJsonResponse(writer, http.StatusOK, response)
