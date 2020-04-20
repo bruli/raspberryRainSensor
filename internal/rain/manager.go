@@ -11,7 +11,7 @@ type RainManager struct {
 	Logger log.Logger
 }
 
-const rainRef = 300
+const rainRef = 500
 
 func NewRainManager(reader HumidityReader, logger log.Logger) *RainManager {
 	return &RainManager{reader: reader, Logger: logger}
