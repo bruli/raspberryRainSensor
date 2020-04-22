@@ -9,7 +9,6 @@ type HumidityReader interface {
 type RainManager struct {
 	reader HumidityReader
 	Logger log.Logger
-	value  uint16
 }
 
 const rainRef = 500
@@ -36,15 +35,10 @@ func (m *RainManager) RainValue() (uint16, error) {
 }
 
 func (m *RainManager) readValues() (uint16, error) {
-	if 0 != m.value {
-		return m.value, nil
-	}
-
 	v, err := m.reader.Read()
 	if err != nil {
 		m.Logger.Fatalf("Fatal error reading humidity: %s", err)
 		return 0, err
 	}
-	m.value = v
 	return v, nil
 }
