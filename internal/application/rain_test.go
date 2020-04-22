@@ -1,17 +1,16 @@
-package rain_test
+package application_test
 
 import (
 	"errors"
 	"fmt"
 	"testing"
 
-	"github.com/bruli/raspberryRainSensor/internal/rain"
+	"github.com/bruli/raspberryRainSensor/internal/application"
+	"github.com/bruli/raspberryRainSensor/internal/domain"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/bruli/raspberryRainSensor/pkg/log"
 )
 
-func TestManager_IsRaining(t *testing.T) {
+func TestNewRainHandler_IsRaining(t *testing.T) {
 	tests := map[string]struct {
 		result    bool
 		readValue uint16
@@ -24,15 +23,15 @@ func TestManager_IsRaining(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			read := rain.HumidityReaderMock{}
-			logger := log.LoggerMock{}
-			read.ReadFunc = func() (uint16, error) {
+			repo := domain.RainRepositoryMock{}
+			logger := domain.LoggerMock{}
+			repo.ReadFunc = func() (uint16, error) {
 				return tt.readValue, tt.err
 			}
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 				assert.Equal(t, tt.logMsg, fmt.Sprintf(format, v...))
 			}
-			manager := rain.NewRainManager(&read, &logger)
+			manager := application.NewRainHandler(&repo, &logger)
 			result, err := manager.IsRaining()
 			assert.Equal(t, tt.result, result)
 			assert.Equal(t, tt.err, err)
@@ -40,7 +39,7 @@ func TestManager_IsRaining(t *testing.T) {
 	}
 }
 
-func TestRainManager_RainValue(t *testing.T) {
+func TestNewRainHandler_RainValue(t *testing.T) {
 	tests := map[string]struct {
 		result uint16
 		err    error
@@ -50,14 +49,14 @@ func TestRainManager_RainValue(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			read := rain.HumidityReaderMock{}
-			logger := log.LoggerMock{}
-			read.ReadFunc = func() (uint16, error) {
+			repo := domain.RainRepositoryMock{}
+			logger := domain.LoggerMock{}
+			repo.ReadFunc = func() (uint16, error) {
 				return tt.result, tt.err
 			}
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 			}
-			manager := rain.NewRainManager(&read, &logger)
+			manager := application.NewRainHandler(&repo, &logger)
 			result, err := manager.RainValue()
 			assert.Equal(t, tt.err, err)
 			assert.Equal(t, tt.result, result)

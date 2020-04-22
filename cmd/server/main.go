@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/bruli/raspberryRainSensor/internal/http/server"
 	"os"
+
+	"github.com/bruli/raspberryRainSensor/internal/infrastructure/http/server"
 )
 
 func main() {

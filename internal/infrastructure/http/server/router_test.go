@@ -8,11 +8,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/bruli/raspberryRainSensor/internal/domain"
 	jsoniter "github.com/json-iterator/go"
-
-	"github.com/bruli/raspberryRainSensor/internal/rain"
-	"github.com/bruli/raspberryRainSensor/pkg/log"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -45,16 +42,20 @@ func TestRainHandler(t *testing.T) {
 		readerError  error
 		readerValue  uint16
 	}{
-		"it should return internal server error when reader returns error": {body: bytes.NewBuffer(errorMsg), httpCodeResp: http.StatusInternalServerError, readerError: errors.New("error"), readerValue: 0},
+		"it should return internal server error when reader returns error": {
+			body:         bytes.NewBuffer(errorMsg),
+			httpCodeResp: http.StatusInternalServerError,
+			readerError:  errors.New("error"),
+			readerValue:  0},
 		"it should return Ok": {body: bytes.NewBuffer(responseBody), httpCodeResp: http.StatusOK, readerValue: 200},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			reader := rain.HumidityReaderMock{}
-			logger := log.LoggerMock{}
+			repository := domain.RainRepositoryMock{}
+			logger := domain.LoggerMock{}
 			rout := newRouter()
-			rout.rain = newRainHandler(&reader, &logger)
+			rout.rain = newRainHandler(&repository, &logger)
 			server := rout.build()
 
 			request, err := http.NewRequest(http.MethodGet, "/rain", tt.body)
@@ -64,7 +65,7 @@ func TestRainHandler(t *testing.T) {
 
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 			}
-			reader.ReadFunc = func() (uint16, error) {
+			repository.ReadFunc = func() (uint16, error) {
 				return tt.readerValue, tt.readerError
 			}
 

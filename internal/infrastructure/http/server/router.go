@@ -3,8 +3,9 @@ package server
 import (
 	"net/http"
 
-	"github.com/bruli/raspberryRainSensor/internal/spi/humiditySensor"
-	log2 "github.com/bruli/raspberryRainSensor/pkg/log"
+	"github.com/bruli/raspberryRainSensor/internal/infrastructure/log"
+
+	"github.com/bruli/raspberryRainSensor/internal/infrastructure/spi/humiditySensor"
 
 	"github.com/gorilla/mux"
 )
@@ -16,7 +17,7 @@ type router struct {
 
 func newRouter() *router {
 	sensor := humiditySensor.NewSensor()
-	logError := log2.NewLogError()
+	logError := log.NewLogError()
 	return &router{
 		homepage: newHomepage(),
 		rain:     newRainHandler(sensor, logError),
