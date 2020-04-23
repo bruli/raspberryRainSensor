@@ -8,7 +8,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bruli/raspberryRainSensor/internal/domain"
+	"github.com/bruli/raspberryRainSensor/internal/log"
+	"github.com/bruli/raspberryRainSensor/internal/rain"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
 )
@@ -52,8 +53,8 @@ func TestRainHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			repository := domain.RainRepositoryMock{}
-			logger := domain.LoggerMock{}
+			repository := rain.RainRepositoryMock{}
+			logger := log.LoggerMock{}
 			rout := newRouter()
 			rout.rain = newRainHandler(&repository, &logger)
 			server := rout.build()

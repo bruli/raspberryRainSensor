@@ -1,17 +1,17 @@
-package application
+package rain
 
 import (
-	"github.com/bruli/raspberryRainSensor/internal/domain"
+	"github.com/bruli/raspberryRainSensor/internal/log"
 )
 
 type RainHandler struct {
-	repository domain.RainRepository
-	Logger     domain.Logger
+	repository RainRepository
+	Logger     log.Logger
 }
 
 const rainRef = 500
 
-func NewRainHandler(reader domain.RainRepository, logger domain.Logger) *RainHandler {
+func NewRainHandler(reader RainRepository, logger log.Logger) *RainHandler {
 	return &RainHandler{repository: reader, Logger: logger}
 }
 func (m *RainHandler) IsRaining() (bool, error) {

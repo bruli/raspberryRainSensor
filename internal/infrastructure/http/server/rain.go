@@ -3,9 +3,10 @@ package server
 import (
 	"net/http"
 
-	"github.com/bruli/raspberryRainSensor/internal/application"
+	"github.com/bruli/raspberryRainSensor/internal/log"
 
-	"github.com/bruli/raspberryRainSensor/internal/domain"
+	"github.com/bruli/raspberryRainSensor/internal/rain"
+
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -19,12 +20,12 @@ func newRainResponseBody() *rainResponseBody {
 }
 
 type rainHandler struct {
-	handler *application.RainHandler
+	handler *rain.RainHandler
 	body    *rainResponseBody
 }
 
-func newRainHandler(reader domain.RainRepository, logger domain.Logger) *rainHandler {
-	return &rainHandler{handler: application.NewRainHandler(reader, logger), body: newRainResponseBody()}
+func newRainHandler(reader rain.RainRepository, logger log.Logger) *rainHandler {
+	return &rainHandler{handler: rain.NewRainHandler(reader, logger), body: newRainResponseBody()}
 }
 
 func (r *rainHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {

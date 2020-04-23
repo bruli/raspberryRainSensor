@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/bruli/raspberryRainSensor/internal/domain"
+	log2 "github.com/bruli/raspberryRainSensor/internal/log"
 )
 
-func NewLogError() domain.Logger {
+func NewLogError() log2.Logger {
 	return log.New(os.Stdout, "ERROR", 1)
 }

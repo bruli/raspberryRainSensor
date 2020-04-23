@@ -1,12 +1,14 @@
-package application_test
+package rain_test
 
 import (
 	"errors"
 	"fmt"
 	"testing"
 
-	"github.com/bruli/raspberryRainSensor/internal/application"
-	"github.com/bruli/raspberryRainSensor/internal/domain"
+	"github.com/bruli/raspberryRainSensor/internal/log"
+
+	"github.com/bruli/raspberryRainSensor/internal/rain"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,15 +25,15 @@ func TestNewRainHandler_IsRaining(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			repo := domain.RainRepositoryMock{}
-			logger := domain.LoggerMock{}
+			repo := rain.RainRepositoryMock{}
+			logger := log.LoggerMock{}
 			repo.ReadFunc = func() (uint16, error) {
 				return tt.readValue, tt.err
 			}
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 				assert.Equal(t, tt.logMsg, fmt.Sprintf(format, v...))
 			}
-			manager := application.NewRainHandler(&repo, &logger)
+			manager := rain.NewRainHandler(&repo, &logger)
 			result, err := manager.IsRaining()
 			assert.Equal(t, tt.result, result)
 			assert.Equal(t, tt.err, err)
@@ -49,14 +51,14 @@ func TestNewRainHandler_RainValue(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			repo := domain.RainRepositoryMock{}
-			logger := domain.LoggerMock{}
+			repo := rain.RainRepositoryMock{}
+			logger := log.LoggerMock{}
 			repo.ReadFunc = func() (uint16, error) {
 				return tt.result, tt.err
 			}
 			logger.FatalfFunc = func(format string, v ...interface{}) {
 			}
-			manager := application.NewRainHandler(&repo, &logger)
+			manager := rain.NewRainHandler(&repo, &logger)
 			result, err := manager.RainValue()
 			assert.Equal(t, tt.err, err)
 			assert.Equal(t, tt.result, result)
