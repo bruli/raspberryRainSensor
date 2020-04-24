@@ -53,7 +53,7 @@ func TestRainHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			repository := rain.RainRepositoryMock{}
+			repository := rain.RepositoryMock{}
 			logger := log.LoggerMock{}
 			rout := newRouter()
 			rout.rain = newRainHandler(&repository, &logger)

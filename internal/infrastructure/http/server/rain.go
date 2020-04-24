@@ -20,28 +20,23 @@ func newRainResponseBody() *rainResponseBody {
 }
 
 type rainHandler struct {
-	handler *rain.RainHandler
+	handler *rain.Handler
 	body    *rainResponseBody
 }
 
-func newRainHandler(reader rain.RainRepository, logger log.Logger) *rainHandler {
-	return &rainHandler{handler: rain.NewRainHandler(reader, logger), body: newRainResponseBody()}
+func newRainHandler(reader rain.Repository, logger log.Logger) *rainHandler {
+	return &rainHandler{handler: rain.NewHandler(reader, logger), body: newRainResponseBody()}
 }
 
 func (r *rainHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	raining, err := r.handler.IsRaining()
-	if err != nil {
-		writeJsonErrorResponse(writer, http.StatusInternalServerError, "Error reading rain sensor.")
-		return
-	}
-	value, err := r.handler.RainValue()
+	rain, err := r.handler.Handle()
 	if err != nil {
 		writeJsonErrorResponse(writer, http.StatusInternalServerError, "Error reading rain sensor.")
 		return
 	}
 
-	r.body.IsRaining = raining
-	r.body.Value = value
+	r.body.IsRaining = rain.IsRain
+	r.body.Value = rain.Value
 	response, _ := jsoniter.Marshal(r.body)
 
 	writeJsonResponse(writer, http.StatusOK, response)
