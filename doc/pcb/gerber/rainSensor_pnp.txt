@@ -1,0 +1,25 @@
+*Pick And Place List
+*Company=
+*Author=
+*eMail=
+*
+*Project=rainSensor
+*Date=09:57:21
+*CreatedBy=Fritzing 0.9.3b.04.19.5c895d327c44a3114e5fcc9d8260daf0cbb52806
+*
+*
+*Coordinates in mm, always center of component
+*Origin 0/0=Lower left corner of PCB
+*Rotation in degree (0-360, math. pos.)
+*
+*No;Value;Package;X;Y;Rotation;Side;Name
+1;;THT;37.1132;-14.9271;0;Bottom;J1
+2;;DIP (Dual Inline) [THT];12.9832;-16.1971;0;Bottom;MCP3008
+3;;;18.5928;-37.5304;0;Bottom;Via2
+4;;;32.004;-44.236;0;Bottom;Via4
+5;;;41.7576;-43.0168;0;Bottom;Via1
+6;;;43.5864;-44.236;0;Bottom;Via3
+7;;;50.8579;-44.2045;90;Bottom;Mod1
+8;;;46.7235;-17.4178;0;Bottom;Power
+9;;THT;42.1932;-14.9271;0;Bottom;J2
+10;;;35.7523;-45.2375;0;Bottom;Raspberry
