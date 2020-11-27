@@ -14,7 +14,7 @@ type Handler struct {
 	Logger     log.Logger
 }
 
-const rainRef = 500
+const rainRef = 1000
 
 func NewHandler(reader Repository, logger log.Logger) *Handler {
 	return &Handler{repository: reader, Logger: logger}
@@ -27,5 +27,5 @@ func (h *Handler) Handle() (Rain, error) {
 		return Rain{}, err
 	}
 
-	return Rain{Value: v, IsRain: v < rainRef}, nil
+	return Rain{Value: v, IsRain: v > rainRef}, nil
 }
