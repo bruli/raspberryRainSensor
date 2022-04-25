@@ -9,8 +9,16 @@ const (
 )
 
 type Config struct {
-	ServerURL  string
-	Environent env.Environment
+	serverURL   string
+	environment env.Environment
+}
+
+func (c Config) ServerURL() string {
+	return c.serverURL
+}
+
+func (c Config) Environment() env.Environment {
+	return c.environment
 }
 
 func NewConfig() (Config, error) {
@@ -27,7 +35,7 @@ func NewConfig() (Config, error) {
 		return Config{}, err
 	}
 	return Config{
-		ServerURL:  url,
-		Environent: environment,
+		serverURL:   url,
+		environment: environment,
 	}, nil
 }

@@ -26,12 +26,12 @@ func main() {
 	}
 	ctx := context.Background()
 	logger := log.New(os.Stdout, config.ProjectPrefix, int(time.Now().Unix()))
-	definitions, err := handlersDefinition(logger, conf.Environent)
+	definitions, err := handlersDefinition(logger, conf.Environment())
 	if err != nil {
 		log.Fatalln(err)
 	}
 	httpHandlers := httpx.NewHandler(definitions)
-	if err := httpx.RunServer(ctx, conf.ServerURL, httpHandlers, &httpx.CORSOpt{}); err != nil {
+	if err := httpx.RunServer(ctx, conf.ServerURL(), httpHandlers, &httpx.CORSOpt{}); err != nil {
 		log.Fatalln(fmt.Errorf("system error: %w", err))
 	}
 }

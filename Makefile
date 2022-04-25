@@ -30,12 +30,8 @@ test-functional:
 clean:
 	go fmt ./...
 
-test-integration:
-	go test -tags integration -race ./... --count=1
-
 lint:
 	golangci-lint run
-	#devops/scripts/scripts_linter.sh check
 	go mod tidy -v && git --no-pager diff --quiet go.mod go.sum
 
 import-jsonschema:
