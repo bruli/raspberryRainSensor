@@ -46,3 +46,23 @@ func logAppErr(logger *log.Logger, appErr AppError) {
 
 	logger.Println(string(b))
 }
+
+type CommandHandlerMiddleware func(h CommandHandler) CommandHandler
+
+func NewCommandHndErrorMiddleware(logger *log.Logger) CommandHandlerMiddleware {
+	return func(h CommandHandler) CommandHandler {
+		return CommandHandlerFunc(func(ctx context.Context, q Command) ([]Event, error) {
+			result, err := h.Handle(ctx, q)
+			if err != nil {
+				logAppErr(logger, AppError{
+					Name:   q.Name(),
+					Input:  q,
+					ErrMsg: err.Error(),
+				})
+				return nil, err
+			}
+
+			return result, nil
+		})
+	}
+}
