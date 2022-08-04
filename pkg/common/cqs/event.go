@@ -101,3 +101,26 @@ func NewBasicAggregateRoot() BasicAggregateRoot {
 		events:    nil,
 	}
 }
+
+func (b *BasicAggregateRoot) Record(evs ...Event) {
+	b.events = append(b.events, evs...)
+}
+
+// Events is a getter
+func (b *BasicAggregateRoot) Events() []Event {
+	events := b.events
+	b.ClearEvents()
+	return events
+}
+
+// ClearEvents removes all events from the aggregate root.
+// It's exported for testing purposes.
+func (b *BasicAggregateRoot) ClearEvents() {
+	b.events = nil
+}
+
+// Hydrate fills the BasicAggregateRoot fields
+func (b *BasicAggregateRoot) Hydrate(createdAt time.Time, events []Event) {
+	b.createdAt = createdAt
+	b.events = events
+}
