@@ -83,3 +83,21 @@ func NewBasicEvent(name EventName, id uuid.UUID, aggRootID string) BasicEvent {
 		AggregateRootIDAttr: aggRootID,
 	}
 }
+
+type BasicAggregateRoot struct {
+	createdAt time.Time
+	events    []Event
+}
+
+// CreatedAt is a getter
+func (b BasicAggregateRoot) CreatedAt() time.Time {
+	return b.createdAt
+}
+
+// NewBasicAggregateRoot is a constructor
+func NewBasicAggregateRoot() BasicAggregateRoot {
+	return BasicAggregateRoot{
+		createdAt: time.Now(),
+		events:    nil,
+	}
+}
