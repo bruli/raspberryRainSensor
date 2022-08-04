@@ -6,7 +6,7 @@ tools-ci: tool-golangci-lint tool-fumpt
 tools-local: tool-golangci-lint tool-moq tool-fumpt	 tool-jsonschema tool-json-lint
 
 tool-golangci-lint:
-	devops/scripts/goget.sh github.com/golangci/golangci-lint/cmd/golangci-lint
+	devops/scripts/goget.sh github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.3
 
 tool-fumpt:
 	devops/scripts/goget.sh mvdan.cc/gofumpt
