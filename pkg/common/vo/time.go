@@ -26,6 +26,10 @@ func (t Time) IsZero() bool {
 	return time.Time(t).IsZero()
 }
 
+func (t Time) HourStr() string {
+	return time.Time(t).Format("15:04")
+}
+
 func TimeNow() Time {
 	return Time(time.Now())
 }
