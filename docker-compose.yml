@@ -1,11 +1,13 @@
 version: "3.3"
 
 services:
-  server:
+  rain_sensor:
     build:
       context: .
       dockerfile: Dockerfile-dev
     container_name: rain_sensor
+    networks:
+      - water-system
     volumes:
       - .:/app
     environment:
@@ -19,3 +21,6 @@ services:
     container_name: rain_sensor_builder
     volumes:
       - .:/app
+networks:
+  water-system:
+    external: true

@@ -46,3 +46,15 @@ build:
 
 deploy:
 	ansible-playbook -i devops/ansible/inventories/production/hosts devops/ansible/deploy.yml
+
+docker-up:
+	docker-compose up -d --build rain_sensor
+
+docker-down:
+	docker-compose down
+
+docker-ps:
+	docker-compose ps
+
+docker-exec:
+	docker exec -it rain_sensor sh
