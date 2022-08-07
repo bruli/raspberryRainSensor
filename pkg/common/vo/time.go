@@ -30,6 +30,16 @@ func (t Time) HourStr() string {
 	return time.Time(t).Format("15:04")
 }
 
+func (t Time) Add(d time.Duration) Time {
+	dt := time.Time(t).Add(d)
+	return Time(dt)
+}
+
+func (t Time) AddDate(years, months, days int) Time {
+	dt := time.Time(t).AddDate(years, months, days)
+	return Time(dt)
+}
+
 func TimeNow() Time {
 	return Time(time.Now())
 }
