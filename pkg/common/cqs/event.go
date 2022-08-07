@@ -2,8 +2,8 @@ package cqs
 
 import (
 	"fmt"
-	"time"
 
+	"github.com/bruli/raspberryRainSensor/pkg/common/vo"
 	"github.com/google/uuid"
 )
 
@@ -40,7 +40,7 @@ func (e EventName) String() string {
 type Event interface {
 	EventID() uuid.UUID
 	EventName() string
-	EventAt() time.Time
+	EventAt() vo.Time
 	AggregateRootID() string
 }
 
@@ -50,7 +50,7 @@ var _ Event = BasicEvent{}
 type BasicEvent struct {
 	IDAttr              uuid.UUID `json:"id"`
 	NameAttr            EventName `json:"name"`
-	AtAttr              time.Time `json:"at"`
+	AtAttr              vo.Time   `json:"at"`
 	AggregateRootIDAttr string    `json:"aggregate_root_id"`
 }
 
@@ -65,7 +65,7 @@ func (b BasicEvent) EventName() string {
 }
 
 // EventAt is a getter
-func (b BasicEvent) EventAt() time.Time {
+func (b BasicEvent) EventAt() vo.Time {
 	return b.AtAttr
 }
 
@@ -79,25 +79,25 @@ func NewBasicEvent(name EventName, id uuid.UUID, aggRootID string) BasicEvent {
 	return BasicEvent{
 		IDAttr:              id,
 		NameAttr:            name,
-		AtAttr:              time.Now(),
+		AtAttr:              vo.TimeNow(),
 		AggregateRootIDAttr: aggRootID,
 	}
 }
 
 type BasicAggregateRoot struct {
-	createdAt time.Time
+	createdAt vo.Time
 	events    []Event
 }
 
 // CreatedAt is a getter
-func (b BasicAggregateRoot) CreatedAt() time.Time {
+func (b BasicAggregateRoot) CreatedAt() vo.Time {
 	return b.createdAt
 }
 
 // NewBasicAggregateRoot is a constructor
 func NewBasicAggregateRoot() BasicAggregateRoot {
 	return BasicAggregateRoot{
-		createdAt: time.Now(),
+		createdAt: vo.TimeNow(),
 		events:    nil,
 	}
 }
@@ -120,7 +120,7 @@ func (b *BasicAggregateRoot) ClearEvents() {
 }
 
 // Hydrate fills the BasicAggregateRoot fields
-func (b *BasicAggregateRoot) Hydrate(createdAt time.Time, events []Event) {
+func (b *BasicAggregateRoot) Hydrate(createdAt vo.Time, events []Event) {
 	b.createdAt = createdAt
 	b.events = events
 }
