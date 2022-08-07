@@ -22,6 +22,10 @@ func (t Time) EpochString() string {
 	return strconv.Itoa(int(unix))
 }
 
+func (t Time) IsZero() bool {
+	return time.Time(t).IsZero()
+}
+
 func TimeNow() Time {
 	return Time(time.Now())
 }
