@@ -16,19 +16,19 @@ var _ rs.HTTPClient = &HTTPClientMock{}
 
 // HTTPClientMock is a mock implementation of rs.HTTPClient.
 //
-// 	func TestSomethingThatUsesHTTPClient(t *testing.T) {
+//	func TestSomethingThatUsesHTTPClient(t *testing.T) {
 //
-// 		// make and configure a mocked rs.HTTPClient
-// 		mockedHTTPClient := &HTTPClientMock{
-// 			DoFunc: func(req *http.Request) (*http.Response, error) {
-// 				panic("mock out the Do method")
-// 			},
-// 		}
+//		// make and configure a mocked rs.HTTPClient
+//		mockedHTTPClient := &HTTPClientMock{
+//			DoFunc: func(req *http.Request) (*http.Response, error) {
+//				panic("mock out the Do method")
+//			},
+//		}
 //
-// 		// use mockedHTTPClient in code that requires rs.HTTPClient
-// 		// and then make assertions.
+//		// use mockedHTTPClient in code that requires rs.HTTPClient
+//		// and then make assertions.
 //
-// 	}
+//	}
 type HTTPClientMock struct {
 	// DoFunc mocks the Do method.
 	DoFunc func(req *http.Request) (*http.Response, error)
@@ -62,7 +62,8 @@ func (mock *HTTPClientMock) Do(req *http.Request) (*http.Response, error) {
 
 // DoCalls gets all the calls that were made to Do.
 // Check the length with:
-//     len(mockedHTTPClient.DoCalls())
+//
+//	len(mockedHTTPClient.DoCalls())
 func (mock *HTTPClientMock) DoCalls() []struct {
 	Req *http.Request
 } {

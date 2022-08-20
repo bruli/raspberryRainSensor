@@ -35,8 +35,9 @@ func (e EventName) String() string {
 	return string(e)
 }
 
-//go:generate moq -out zmock_event_test.go -pkg cqs_test . Event
 // Event is self-described
+//
+//go:generate moq -out zmock_event_test.go -pkg cqs_test . Event
 type Event interface {
 	EventID() uuid.UUID
 	EventName() string

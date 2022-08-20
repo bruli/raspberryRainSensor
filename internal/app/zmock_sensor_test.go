@@ -17,19 +17,19 @@ var _ app.RainSensor = &RainSensorMock{}
 
 // RainSensorMock is a mock implementation of app.RainSensor.
 //
-// 	func TestSomethingThatUsesRainSensor(t *testing.T) {
+//	func TestSomethingThatUsesRainSensor(t *testing.T) {
 //
-// 		// make and configure a mocked app.RainSensor
-// 		mockedRainSensor := &RainSensorMock{
-// 			ReadFunc: func(ctx context.Context) (rain.Rain, error) {
-// 				panic("mock out the Read method")
-// 			},
-// 		}
+//		// make and configure a mocked app.RainSensor
+//		mockedRainSensor := &RainSensorMock{
+//			ReadFunc: func(ctx context.Context) (rain.Rain, error) {
+//				panic("mock out the Read method")
+//			},
+//		}
 //
-// 		// use mockedRainSensor in code that requires app.RainSensor
-// 		// and then make assertions.
+//		// use mockedRainSensor in code that requires app.RainSensor
+//		// and then make assertions.
 //
-// 	}
+//	}
 type RainSensorMock struct {
 	// ReadFunc mocks the Read method.
 	ReadFunc func(ctx context.Context) (rain.Rain, error)
@@ -63,7 +63,8 @@ func (mock *RainSensorMock) Read(ctx context.Context) (rain.Rain, error) {
 
 // ReadCalls gets all the calls that were made to Read.
 // Check the length with:
-//     len(mockedRainSensor.ReadCalls())
+//
+//	len(mockedRainSensor.ReadCalls())
 func (mock *RainSensorMock) ReadCalls() []struct {
 	Ctx context.Context
 } {
