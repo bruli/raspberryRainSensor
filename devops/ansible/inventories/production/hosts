@@ -6,4 +6,4 @@ production
 [raspberry_rain_sensor:vars]
 home=/home/pi
 binary_path=/home/pi/server
-service_name=raspberryRainSensor
+service_name=rain_sensor

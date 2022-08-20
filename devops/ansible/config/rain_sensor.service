@@ -1,0 +1,14 @@
+[Unit]
+Description=Rain sensor service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/home/pi/server
+Environment="RS_SERVER_URL=192.168.1.11:80" "RS_ENVIRONMENT=production"
+
+[Install]
+WantedBy=multi-user.target

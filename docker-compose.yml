@@ -15,12 +15,6 @@ services:
       RS_ENVIRONMENT: ${RS_ENVIRONMENT:-development}
     ports:
       - "8082:8080"
-  builder:
-    build:
-      context: .
-    container_name: rain_sensor_builder
-    volumes:
-      - .:/app
 networks:
   water-system:
     external: true

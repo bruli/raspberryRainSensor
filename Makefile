@@ -32,7 +32,6 @@ clean:
 
 lint:
 	golangci-lint run
-	go mod tidy -v && git --no-pager diff --quiet go.mod go.sum
 
 import-jsonschema:
 	devops/scripts/import_jsonschema.sh
@@ -58,3 +57,7 @@ docker-ps:
 
 docker-exec:
 	docker exec -it rain_sensor sh
+
+docker-exec-builder:
+	docker build -t builder .
+	docker run -it --rm -v $(shell pwd):/app builder bash
