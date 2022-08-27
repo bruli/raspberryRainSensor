@@ -43,7 +43,6 @@ func TestParseFromTime(t *testing.T) {
 }
 
 func TestParseFromEpochStr(t *testing.T) {
-
 	tests := []struct {
 		name, value string
 	}{
