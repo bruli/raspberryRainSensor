@@ -33,6 +33,7 @@ func TestParseFromTime(t *testing.T) {
 			voTime, err := vo.ParseFromTime(tt.time)
 			if err != nil {
 				require.ErrorIs(t, err, vo.ErrInvalidZeroTime)
+				return
 			}
 			require.Equal(t, tt.expected, voTime)
 			require.NotEqual(t, 0, len(voTime.EpochString()))

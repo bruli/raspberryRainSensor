@@ -54,3 +54,10 @@ func ParseFromEpochStr(s string) (Time, error) {
 	}
 	return ParseFromTime(time.Unix(int64(i), 0))
 }
+
+func TimePtr(dt Time) *Time {
+	if dt.IsZero() {
+		return nil
+	}
+	return &dt
+}
