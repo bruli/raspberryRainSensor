@@ -6,7 +6,10 @@ import (
 	"time"
 )
 
-var ErrInvalidZeroTime = errors.New("invalid zero time to build Time object")
+var (
+	ErrInvalidZeroTime = errors.New("invalid zero time to build Time object")
+	ErrEpochStrToTime  = errors.New("invalid epoch string to parse build to time object")
+)
 
 type Time time.Time
 
@@ -42,4 +45,12 @@ func (t Time) AddDate(years, months, days int) Time {
 
 func TimeNow() Time {
 	return Time(time.Now())
+}
+
+func ParseFromEpochStr(s string) (Time, error) {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return Time{}, ErrEpochStrToTime
+	}
+	return ParseFromTime(time.Unix(int64(i), 0))
 }
