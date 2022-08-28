@@ -56,7 +56,7 @@ docker-ps:
 	docker-compose ps
 
 docker-exec:
-	docker exec -it rain_sensor sh
+	docker exec -it rain_sensor bash
 
 docker-exec-builder:
 	docker build -t builder .
