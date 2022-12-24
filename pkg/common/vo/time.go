@@ -43,6 +43,10 @@ func (t Time) AddDate(years, months, days int) Time {
 	return Time(dt)
 }
 
+func (t Time) Date() string {
+	return time.Time(t).Format("2006-01-02 15:04:05")
+}
+
 func TimeNow() Time {
 	return Time(time.Now())
 }
