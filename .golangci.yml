@@ -696,7 +696,6 @@ linters:
     - gosimple
     - govet
     - ineffassign
-    - structcheck
     - unconvert
     - unused
     - varcheck

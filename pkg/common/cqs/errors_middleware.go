@@ -3,8 +3,8 @@ package cqs
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"log"
+
+	"github.com/rs/zerolog"
 )
 
 // AppError is a query/command hnd error with context
@@ -18,7 +18,7 @@ type AppError struct {
 type QueryHandlerMiddleware func(h QueryHandler) QueryHandler
 
 // NewQueryHndErrorMiddleware is a middleware constructor to log a contextualized query handler error
-func NewQueryHndErrorMiddleware(logger *log.Logger) QueryHandlerMiddleware {
+func NewQueryHndErrorMiddleware(logger *zerolog.Logger) QueryHandlerMiddleware {
 	return func(h QueryHandler) QueryHandler {
 		return queryHandlerFunc(func(ctx context.Context, q Query) (QueryResult, error) {
 			result, err := h.Handle(ctx, q)
@@ -36,20 +36,19 @@ func NewQueryHndErrorMiddleware(logger *log.Logger) QueryHandlerMiddleware {
 	}
 }
 
-func logAppErr(logger *log.Logger, appErr AppError) {
+func logAppErr(logger *zerolog.Logger, appErr AppError) {
 	b, err := json.Marshal(&appErr)
 	if err != nil {
-		msg := fmt.Sprintf("something when wrong when trying to marshal app error from %s: %s", err.Error(), appErr.Name)
-		logger.Println([]byte(msg))
+		logger.Err(err).Msgf("something when wrong when trying to marshal app error from %s: %s", err.Error(), appErr.Name)
 		return
 	}
 
-	logger.Println(string(b))
+	logger.Err(err).Msg(string(b))
 }
 
 type CommandHandlerMiddleware func(h CommandHandler) CommandHandler
 
-func NewCommandHndErrorMiddleware(logger *log.Logger) CommandHandlerMiddleware {
+func NewCommandHndErrorMiddleware(logger *zerolog.Logger) CommandHandlerMiddleware {
 	return func(h CommandHandler) CommandHandler {
 		return CommandHandlerFunc(func(ctx context.Context, q Command) ([]Event, error) {
 			result, err := h.Handle(ctx, q)

@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
 	http2 "net/http"
 	"os"
-	"time"
+
+	"github.com/rs/zerolog"
 
 	"github.com/bruli/raspberryRainSensor/internal/infra/fake"
 
@@ -20,23 +19,24 @@ import (
 )
 
 func main() {
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	conf, err := config.NewConfig()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal().Err(err).Msg("failed to build config")
 	}
 	ctx := context.Background()
-	logger := log.New(os.Stdout, config.ProjectPrefix, int(time.Now().Unix()))
-	definitions, err := handlersDefinition(logger, conf.Environment())
+	definitions, err := handlersDefinition(&log, conf.Environment())
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal().Err(err)
 	}
 	httpHandlers := httpx.NewHandler(definitions)
-	if err := httpx.RunServer(ctx, conf.ServerURL(), httpHandlers, &httpx.CORSOpt{}); err != nil {
-		log.Fatalln(fmt.Errorf("system error: %w", err))
+	if err = httpx.RunServer(ctx, conf.ServerURL(), httpHandlers, &httpx.CORSOpt{}); err != nil {
+		log.Fatal().Err(err).Msg("system error")
 	}
 }
 
-func handlersDefinition(log *log.Logger, env env.Environment) (httpx.HandlersDefinition, error) {
+func handlersDefinition(log *zerolog.Logger, env env.Environment) (httpx.HandlersDefinition, error) {
 	var rs app.RainSensor
 	rs = hunter.RainSensor{}
 	if !env.IsProduction() {
