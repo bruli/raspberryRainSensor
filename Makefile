@@ -41,7 +41,7 @@ json-lint:
 
 build:
 	 @make clean
-	CC=arm-linux-gnueabi-gcc CGO_ENABLED=1 GOOS=linux GOARCH=arm GOARM=6 go build -o devops/ansible/assets/server cmd/server/main.go
+	CC=arm-linux-gnueabi-gcc CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -o devops/ansible/assets/server cmd/server/main.go
 
 deploy:
 	ansible-playbook -i devops/ansible/inventories/production/hosts devops/ansible/deploy.yml

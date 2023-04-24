@@ -8,6 +8,10 @@
       shell: systemctl stop "{{ service_name}}"
       become: yes
     - name: Copy old binary file
+      with_first_found:
+        - files:
+          - /home/pi/server
+          skip: true
       shell: cp {{ binary_path }} {{ binary_path }}_old
     - name: Upload binary file
       copy:
