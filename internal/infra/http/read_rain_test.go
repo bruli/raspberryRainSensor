@@ -19,7 +19,7 @@ func TestReadRain(t *testing.T) {
 	tests := []struct {
 		name         string
 		expectedCode int
-		result       cqs.QueryResult
+		result       any
 		qhErr        error
 	}{
 		{
@@ -39,7 +39,7 @@ func TestReadRain(t *testing.T) {
 		when is called `+tt.name, func(t *testing.T) {
 			t.Parallel()
 			qh := &QueryHandlerMock{
-				HandleFunc: func(ctx context.Context, query cqs.Query) (cqs.QueryResult, error) {
+				HandleFunc: func(ctx context.Context, query cqs.Query) (any, error) {
 					return tt.result, tt.qhErr
 				},
 			}

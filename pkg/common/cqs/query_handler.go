@@ -33,16 +33,13 @@ func (qn QueryName) Name() string {
 	return string(qn)
 }
 
-// QueryResult is a generic query result type.
-type QueryResult interface{}
-
 // QueryHandler is the interface for handling queries.
 type QueryHandler interface {
-	Handle(ctx context.Context, query Query) (QueryResult, error)
+	Handle(ctx context.Context, query Query) (any, error)
 }
 
-type queryHandlerFunc func(ctx context.Context, query Query) (QueryResult, error)
+type queryHandlerFunc func(ctx context.Context, query Query) (any, error)
 
-func (f queryHandlerFunc) Handle(ctx context.Context, query Query) (QueryResult, error) {
+func (f queryHandlerFunc) Handle(ctx context.Context, query Query) (any, error) {
 	return f(ctx, query)
 }

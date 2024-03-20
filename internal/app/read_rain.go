@@ -18,7 +18,7 @@ type ReadRain struct {
 	rs RainSensor
 }
 
-func (r ReadRain) Handle(ctx context.Context, query cqs.Query) (cqs.QueryResult, error) {
+func (r ReadRain) Handle(ctx context.Context, query cqs.Query) (any, error) {
 	_, ok := query.(ReadRainQuery)
 	if !ok {
 		return nil, cqs.NewInvalidQueryError(ReadRainQueryName, query.Name())

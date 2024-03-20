@@ -20,7 +20,7 @@ type QueryHandlerMiddleware func(h QueryHandler) QueryHandler
 // NewQueryHndErrorMiddleware is a middleware constructor to log a contextualized query handler error
 func NewQueryHndErrorMiddleware(logger *zerolog.Logger) QueryHandlerMiddleware {
 	return func(h QueryHandler) QueryHandler {
-		return queryHandlerFunc(func(ctx context.Context, q Query) (QueryResult, error) {
+		return queryHandlerFunc(func(ctx context.Context, q Query) (any, error) {
 			result, err := h.Handle(ctx, q)
 			if err != nil {
 				logAppErr(logger, AppError{
