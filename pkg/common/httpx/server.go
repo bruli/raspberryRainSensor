@@ -2,6 +2,7 @@ package httpx
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -42,7 +43,7 @@ func listenAndServe(ctx context.Context, address string, server *http.Server, re
 	}()
 
 	err = server.Serve(ln)
-	if err == http.ErrServerClosed {
+	if errors.Is(err, http.ErrServerClosed) {
 		return nil
 	}
 	return err
