@@ -6,14 +6,10 @@ import (
 	"testing"
 
 	"github.com/bruli/raspberryRainSensor/fixtures"
-
-	"github.com/bruli/raspberryRainSensor/internal/domain/rain"
-
-	"github.com/bruli/raspberryRainSensor/pkg/common/test"
-	"github.com/stretchr/testify/require"
-
 	"github.com/bruli/raspberryRainSensor/internal/app"
+	"github.com/bruli/raspberryRainSensor/internal/domain/rain"
 	"github.com/bruli/raspberryRainSensor/pkg/common/cqs"
+	"github.com/stretchr/testify/require"
 )
 
 func TestReadRainHandle(t *testing.T) {
@@ -55,7 +51,7 @@ func TestReadRainHandle(t *testing.T) {
 			handler := app.NewReadRain(rs)
 			result, err := handler.Handle(context.Background(), tt.query)
 			if err != nil {
-				test.CheckErrorsType(t, tt.expectedErr, err)
+				require.ErrorAs(t, err, &tt.expectedErr)
 				return
 			}
 			require.Equal(t, tt.expectedErr, err)

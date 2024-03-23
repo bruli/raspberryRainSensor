@@ -13,7 +13,6 @@ import (
 	"github.com/bruli/raspberryRainSensor/internal/domain/rain"
 	http2 "github.com/bruli/raspberryRainSensor/internal/infra/http"
 
-	"github.com/bruli/raspberryRainSensor/pkg/common/test"
 	"github.com/bruli/raspberryRainSensor/pkg/rs"
 	"github.com/stretchr/testify/require"
 )
@@ -59,7 +58,7 @@ func TestReadRain(t *testing.T) {
 			pkg := rs.New("serverURL", cl)
 			ra, err := pkg.ReadRain(context.Background())
 			if err != nil {
-				test.CheckErrorsType(t, tt.expectedErr, err)
+				require.ErrorAs(t, err, &tt.expectedErr)
 				return
 			}
 			require.Equal(t, tt.expectedErr, err)
