@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/home/pi/server
+ExecStart=/home/pablo/server
 EnvironmentFile=/etc/systemd/system/rain_sensor.conf
 
 [Install]

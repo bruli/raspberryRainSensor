@@ -12,9 +12,8 @@ func TestNewRain(t *testing.T) {
 	when is called,
 	then returns a full rain struct`, func(t *testing.T) {
 		value := 1023
-		raining := true
-		obj := rain.New(value, raining)
+		obj := rain.New(value)
 		require.Equal(t, value, obj.Value())
-		require.Equal(t, raining, obj.Raining())
+		require.True(t, obj.Raining())
 	})
 }

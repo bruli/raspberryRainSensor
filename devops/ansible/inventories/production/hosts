@@ -1,9 +1,9 @@
-production ansible_user=pi ansible_host=192.168.1.11
+production ansible_user=pablo ansible_host=192.168.1.11
 
 [raspberry_rain_sensor]
 production
 
 [raspberry_rain_sensor:vars]
-home=/home/pi
-binary_path=/home/pi/server
+home=/home/pablo
+binary_path=/home/pablo/server
 service_name=rain_sensor
