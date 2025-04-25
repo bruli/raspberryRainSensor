@@ -2,18 +2,16 @@
 
 package http
 
-import (
-	"encoding/json"
-	"fmt"
-)
+import "encoding/json"
+import "fmt"
 
 // This schema defines the response to read rain
 type RainResponseJson struct {
 	// IsRaining corresponds to the JSON schema field "is_raining".
-	IsRaining bool `json:"is_raining"`
+	IsRaining bool `json:"is_raining" yaml:"is_raining" mapstructure:"is_raining"`
 
 	// Value corresponds to the JSON schema field "value".
-	Value int `json:"value"`
+	Value int `json:"value" yaml:"value" mapstructure:"value"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
@@ -23,10 +21,10 @@ func (j *RainResponseJson) UnmarshalJSON(b []byte) error {
 		return err
 	}
 	if v, ok := raw["is_raining"]; !ok || v == nil {
-		return fmt.Errorf("field is_raining: required")
+		return fmt.Errorf("field is_raining in RainResponseJson: required")
 	}
 	if v, ok := raw["value"]; !ok || v == nil {
-		return fmt.Errorf("field value: required")
+		return fmt.Errorf("field value in RainResponseJson: required")
 	}
 	type Plain RainResponseJson
 	var plain Plain

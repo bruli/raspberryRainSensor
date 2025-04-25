@@ -1,25 +1,31 @@
 
+define help
+Usage: make <command>
+Commands:
+   help:                      Show this help information
+   tool-jsonschema:           Install gojsonschema tool
+   test:                      Run unit tests
+   test-functional:           Run functional tests
+   docker-up:                 Start docker containers
+   docker-down:               Stop docker containers
+   docker-ps:                 To watch all docker containers
+   docker-exec                To entry into water system container
+   lint:                      Execute go linter
+   clean:                     To clean code
+   fumpt:					  Format code
+   import-jsonschema:         Import and generate DTOS from json schemas
+   build:                     Compile the project
+   docker-exec-builder:       Start builder docker container and entry inside it. Build project here.
+   deploy:                    Deploy the code to raspberry
+endef
+export help
+
+.PHONY: help
+help:
+	@echo "$$help"
+
 docker-logs:
 	docker logs -f rain_sensor
-
-tools-ci: tool-golangci-lint tool-fumpt
-tools-local: tool-golangci-lint tool-moq tool-fumpt	 tool-jsonschema tool-json-lint
-
-tool-golangci-lint:
-	devops/scripts/goget.sh github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.3
-
-tool-fumpt:
-	devops/scripts/goget.sh mvdan.cc/gofumpt
-
-tool-moq:
-	devops/scripts/goget.sh github.com/matryer/moq
-
-tool-jsonschema:
-	devops/scripts/goget.sh github.com/atombender/go-jsonschema/...
-	devops/scripts/goget.sh github.com/atombender/go-jsonschema/cmd/gojsonschema
-
-tool-json-lint:
-	go get github.com/santhosh-tekuri/jsonschema/cmd/jv
 
 test:
 	go test -race ./...
@@ -27,11 +33,20 @@ test:
 test-functional:
 	go test -tags functional -race ./functional_test/... --count=1
 
+.PHONY: tool-jsonschema
+tool-jsonschema:
+	go get github.com/atombender/go-jsonschema/...
+	go install github.com/atombender/go-jsonschema@latest
+
 clean:
 	go fmt ./...
 
+.PHONY: fumpt
+fumpt:
+	go tool gofumpt -w -l .
+
 lint:
-	golangci-lint run
+	go tool golangci-lint run
 
 import-jsonschema:
 	devops/scripts/import_jsonschema.sh
@@ -47,13 +62,13 @@ deploy:
 	ansible-playbook -i devops/ansible/inventories/production/hosts devops/ansible/deploy.yml
 
 docker-up:
-	docker-compose up -d --build rain_sensor
+	docker compose up -d --build rain_sensor
 
 docker-down:
-	docker-compose down
+	docker compose down
 
 docker-ps:
-	docker-compose ps
+	docker compose ps
 
 docker-exec:
 	docker exec -it rain_sensor bash

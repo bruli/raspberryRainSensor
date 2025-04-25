@@ -4,10 +4,9 @@
 package rs_test
 
 import (
-	"net/http"
-	"sync"
-
 	"github.com/bruli/raspberryRainSensor/pkg/rs"
+	http2 "net/http"
+	"sync"
 )
 
 // Ensure, that HTTPClientMock does implement rs.HTTPClient.
@@ -20,7 +19,7 @@ var _ rs.HTTPClient = &HTTPClientMock{}
 //
 //		// make and configure a mocked rs.HTTPClient
 //		mockedHTTPClient := &HTTPClientMock{
-//			DoFunc: func(req *http.Request) (*http.Response, error) {
+//			DoFunc: func(req *http2.Request) (*http2.Response, error) {
 //				panic("mock out the Do method")
 //			},
 //		}
@@ -31,26 +30,26 @@ var _ rs.HTTPClient = &HTTPClientMock{}
 //	}
 type HTTPClientMock struct {
 	// DoFunc mocks the Do method.
-	DoFunc func(req *http.Request) (*http.Response, error)
+	DoFunc func(req *http2.Request) (*http2.Response, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
 		// Do holds details about calls to the Do method.
 		Do []struct {
 			// Req is the req argument value.
-			Req *http.Request
+			Req *http2.Request
 		}
 	}
 	lockDo sync.RWMutex
 }
 
 // Do calls DoFunc.
-func (mock *HTTPClientMock) Do(req *http.Request) (*http.Response, error) {
+func (mock *HTTPClientMock) Do(req *http2.Request) (*http2.Response, error) {
 	if mock.DoFunc == nil {
 		panic("HTTPClientMock.DoFunc: method is nil but HTTPClient.Do was just called")
 	}
 	callInfo := struct {
-		Req *http.Request
+		Req *http2.Request
 	}{
 		Req: req,
 	}
@@ -65,10 +64,10 @@ func (mock *HTTPClientMock) Do(req *http.Request) (*http.Response, error) {
 //
 //	len(mockedHTTPClient.DoCalls())
 func (mock *HTTPClientMock) DoCalls() []struct {
-	Req *http.Request
+	Req *http2.Request
 } {
 	var calls []struct {
-		Req *http.Request
+		Req *http2.Request
 	}
 	mock.lockDo.RLock()
 	calls = mock.calls.Do

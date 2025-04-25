@@ -5,10 +5,9 @@ package app_test
 
 import (
 	"context"
-	"sync"
-
 	"github.com/bruli/raspberryRainSensor/internal/app"
 	"github.com/bruli/raspberryRainSensor/internal/domain/rain"
+	"sync"
 )
 
 // Ensure, that RainSensorMock does implement app.RainSensor.
